@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#16704a">
+<title>CropShield AI — Smart Crop Health</title>
+<style>
+:root{--g:#16704a;--g2:#e8f6ee;--g3:#0d4e34;--ink:#173027;--muted:#68766f;--bg:#f4f8f5;--card:#fff;--line:#dce8e0;--orange:#a76300;--red:#b83b37;--blue:#2563a8}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial;background:var(--bg);color:var(--ink)}
+header{position:sticky;top:0;z-index:5;background:linear-gradient(135deg,#0f5b3b,#21865a);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 5px 18px #17302722}.brand{font-size:20px;font-weight:850}.sub{font-size:11px;opacity:.82}.top-actions{display:flex;gap:7px;align-items:center}.top-actions button{background:#ffffff18;color:#fff;border:1px solid #ffffff44}
+main{max-width:1180px;margin:auto;padding:20px 14px 60px}.nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}.nav button{background:#fff;border:1px solid var(--line);color:var(--ink)}.nav button.active{background:var(--g);color:#fff}
+button{border:0;border-radius:11px;padding:10px 13px;font-weight:750;cursor:pointer}.primary{background:var(--g);color:#fff}.secondary{background:#edf4f0;color:var(--ink)}.danger{background:#fff0ef;color:var(--red)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:18px;box-shadow:0 6px 22px #1730270d}.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:15px}.hero h1{font-size:34px;line-height:1.08;margin:5px 0 11px}.lead{color:var(--muted);line-height:1.55}.preview{min-height:230px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#e5f6eb,#f7fbf8);font-size:82px}
+.badges{display:flex;gap:7px;flex-wrap:wrap}.badge{background:var(--g2);color:var(--g);padding:6px 9px;border-radius:999px;font-size:11px;font-weight:800}.section{margin-top:16px}.section>h2{font-size:20px;margin:0 0 11px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.metric{display:flex;justify-content:space-between;align-items:center}.metric .icon{font-size:28px}.metric .value{font-size:24px;font-weight:850}.muted{color:var(--muted);font-size:12px}.risk{display:inline-block;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:850;background:#fff0d6;color:var(--orange)}.good{background:#e7f7ed;color:var(--g)}.bad{background:#ffebea;color:var(--red)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.hidden{display:none!important}
+label{font-size:12px;font-weight:750;display:block;margin:9px 0 5px}input,select,textarea{width:100%;padding:10px 11px;border:1px solid #cddbd2;border-radius:10px;background:#fff;font:inherit}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.notice{padding:11px 13px;border-radius:12px;background:#f7faf8;border:1px solid var(--line);font-size:12px;line-height:1.5}.notice.warn{background:#fff7e9;border-color:#f0d49c}.notice.info{background:#eef6ff;border-color:#cfe1f4}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line)}th{color:var(--muted)}
+.progress{height:9px;background:#e7eee9;border-radius:99px;overflow:hidden}.progress>span{display:block;height:100%;background:var(--g);border-radius:99px}
+.checks label{font-weight:500;display:flex;gap:8px;align-items:center}.checks input{width:auto}
+.modal{position:fixed;inset:0;background:#0b241a88;z-index:20;display:grid;place-items:center;padding:18px}.modal .card{max-width:470px;width:100%}
+footer{text-align:center;color:#7a8781;font-size:11px;margin-top:28px}
+@media(max-width:800px){.hero,.grid,.grid4{grid-template-columns:1fr 1fr}.hero h1{font-size:28px}}@media(max-width:560px){.hero,.grid,.grid4,.row,.row3{grid-template-columns:1fr}}
+<style>
+.voice-card{background:linear-gradient(135deg,#f0faf4,#fff);border:1px solid #cde5d4}.voice-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.voice-btn{min-width:150px}.voice-btn.listening{background:#b42318!important;color:#fff!important;animation:pulse 1.2s infinite}.voice-status{font-size:13px;font-weight:700;color:#28533b}.voice-transcript{min-height:52px;padding:12px;border-radius:12px;background:#fff;border:1px solid #d8e6dc;margin-top:10px}@keyframes pulse{50%{transform:scale(1.02);box-shadow:0 0 0 8px #b4231822}}
+</style>
+</head>
+<body>
+<header>
+<div><div class="brand">🌿 CropShield AI</div><div class="sub">SIH 2026 • Smart Crop Health & Early Warning System</div></div>
+<div class="top-actions">
+<select id="langSelect" onchange="setLanguage(this.value)" style="padding:9px;border-radius:10px;border:1px solid #ffffff55;background:#ffffff18;color:#fff;font-weight:750">
+<option value="en">English</option><option value="hi">हिन्दी</option><option value="te">తెలుగు</option>
+<option value="pa">ਪੰਜਾਬੀ</option><option value="ha">हरियाणवी</option><option value="as">অসমীয়া</option>
+<option value="or">ଓଡ଼ିଆ</option><option value="bn">বাংলা</option><option value="mr">मराठी</option>
+<option value="gu">ગુજરાતી</option><option value="ta">தமிழ்</option><option value="kn">ಕನ್ನಡ</option>
+<option value="ml">മലയാളം</option><option value="bho">भोजपुरी</option><option value="mai">मैथिली</option>
+</select><button onclick="openLogin()">👤 Farmer</button></div>
+</header>
+<main>
+<div class="nav">
+<button id="nav-home" onclick="show('home')">🏠 Home</button>
+<button id="nav-dashboard" onclick="show('dashboard')">📊 Dashboard</button>
+<button id="nav-scan" onclick="show('scan')">📷 AI Scan</button>
+<button id="nav-fields" onclick="show('fields')">🌾 My Fields</button>
+<button id="nav-alerts" onclick="show('alerts')">🔔 Alerts <span id="alertCount"></span></button>
+<button id="nav-advice" onclick="show('advice')">💡 Smart Advice</button>
+<button id="nav-voice" onclick="show('voice')">🎙️ Voice</button>
+</div>
+
+<section id="home">
+<div class="hero">
+<div class="card">
+<div class="badges"><span class="badge">SIH26131</span><span class="badge">Agriculture</span><span class="badge">FoodTech</span><span class="badge">Rural Development</span></div>
+<h1>One dashboard for the whole crop.</h1>
+<p class="lead">Detect visible disease and pest symptoms, monitor weather and soil conditions, identify irrigation and crop-stress risks, and turn those signals into farmer-friendly actions.</p>
+<div class="actions"><button class="primary" onclick="show('dashboard')">Open my farm</button><button class="secondary" onclick="show('scan')">📷 Scan crop</button><button class="secondary" onclick="useGPS()">📍 Use my location</button><button class="secondary" onclick="show('voice')">🎙️ Voice assistant</button></div>
+<div id="locationStatus" class="notice info" style="margin-top:12px">Location is not connected yet. Use GPS to fetch live weather for the field.</div>
+</div>
+<div class="card preview">🌾📱</div>
+</div>
+<div class="section grid4">
+<div class="card"><div class="metric"><span class="icon">🌡️</span><span class="value" id="homeTemp">—</span></div><b>Temperature</b><div class="muted">Live when GPS is enabled</div></div>
+<div class="card"><div class="metric"><span class="icon">💧</span><span class="value" id="homeHum">—</span></div><b>Humidity</b><div class="muted">Weather signal</div></div>
+<div class="card"><div class="metric"><span class="icon">🌧️</span><span class="value" id="homeRain">—</span></div><b>Rain</b><div class="muted">Current precipitation</div></div>
+<div class="card"><div class="metric"><span class="icon">🌱</span><span class="value" id="homeSoil">—</span></div><b>Soil moisture</b><div class="muted">Weather-model estimate</div></div>
+</div>
+<div class="section grid">
+<div class="card"><h3>🧠 AI crop health</h3><p class="lead">Image screening for visible disease, pest damage, discoloration, spots, wilting and other symptoms.</p></div>
+<div class="card"><h3>💦 Irrigation intelligence</h3><p class="lead">Use soil moisture, rainfall and evapotranspiration signals to create an irrigation-check alert.</p></div>
+<div class="card"><h3>⚠️ Multi-risk early warning</h3><p class="lead">Bring disease, pest, heat, drought, excess moisture, nutrient-stress and weather signals into one view.</p></div>
+</div>
+</section>
+
+<section id="voice" class="hidden">
+<div class="card voice-card"><h2>🎙️ Voice Farmer Assistant</h2><p class="lead">Speak in your selected language. Ask about crop problems, weather, alerts, or advice — then let CropShield read the response aloud.</p><div class="voice-controls"><button id="voiceMic" class="primary voice-btn" onclick="toggleVoice()">🎙️ Start speaking</button><button class="secondary voice-btn" onclick="speakCurrentAdvice()">🔊 Speak smart advice</button><button class="secondary voice-btn" onclick="stopSpeaking()">⏹️ Stop voice</button></div><div id="voiceStatus" class="voice-status" style="margin-top:10px">Ready. Select a language above, then tap the microphone.</div><div id="voiceTranscript" class="voice-transcript">Your spoken question will appear here.</div><div class="notice info" style="margin-top:10px"><b>Prototype voice engine:</b> microphone recognition uses the browser Web Speech API when supported; speech output uses the device's text-to-speech voices. Recognition availability varies by browser and may use an online recognition service.</div></div>
+</section>
+
+<section id="dashboard" class="hidden">
+<div class="card">
+<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><h2 style="margin:0">Farm Command Center</h2><div class="muted" id="fieldTitle">No field selected</div></div><button class="primary" onclick="refreshWeather()">↻ Refresh weather</button></div>
+<div id="weatherNote" class="notice info" style="margin-top:12px">Use GPS from Home or My Fields to load live weather.</div>
+<div class="section grid4">
+<div class="card"><div class="metric"><span>🌡️</span><span class="value" id="temp">—</span></div><b>Temperature</b></div>
+<div class="card"><div class="metric"><span>💧</span><span class="value" id="humidity">—</span></div><b>Humidity</b></div>
+<div class="card"><div class="metric"><span>🌧️</span><span class="value" id="rain">—</span></div><b>Rain</b></div>
+<div class="card"><div class="metric"><span>🌱</span><span class="value" id="soil">—</span></div><b>Soil moisture</b></div>
+</div>
+<div class="section grid">
+<div class="card"><h3>🌾 Selected crop</h3><p id="dashCrop">Not selected</p><div class="progress"><span id="cropProgress" style="width:65%"></span></div><div class="muted" style="margin-top:6px">Growth monitoring readiness</div></div>
+<div class="card"><h3>🐛 Pest risk</h3><span id="pestRisk" class="risk">CALCULATING</span><p class="muted">Environmental signal + scan history</p></div>
+<div class="card"><h3>🍃 Disease risk</h3><span id="diseaseRisk" class="risk">CALCULATING</span><p class="muted">Weather + image observations</p></div>
+</div>
+<div class="section"><h2>Today’s action queue</h2><div id="actionQueue"></div></div>
+</div>
+</section>
+
+<section id="scan" class="hidden">
+<div class="card"><button class="secondary" onclick="show('home')">← Back</button><h2>AI Crop & Pest Scanner</h2>
+<div class="row">
+<div><label>Crop</label><select id="scanCrop"><option>Wheat</option><option>Rice</option><option>Tomato</option><option>Potato</option><option>Cotton</option><option>Maize</option><option>Chilli</option><option>Soybean</option></select></div>
+<div><label>Plant part</label><select><option>Leaf</option><option>Stem</option><option>Fruit</option><option>Whole plant</option></select></div>
+</div>
+<div class="notice info" style="margin-top:12px">Upload a clear photo in good light. Keep this prototype result separate from a validated diagnosis.</div>
+<div class="section" style="border:2px dashed #91b9a1;border-radius:14px;padding:24px;text-align:center"><div style="font-size:50px">📷</div><b>Upload crop image</b><br><input id="imageFile" type="file" accept="image/*" onchange="previewImage()"><div id="imagePreview" style="margin-top:10px"></div><button class="primary" onclick="runScan()">Analyze symptoms</button></div>
+<div id="scanResult" class="hidden section">
+<div class="grid">
+<div class="card"><h3>AI screening</h3><span class="risk">REVIEW REQUIRED</span><p>Possible visible stress / disease-like symptoms detected in this prototype flow.</p><p class="muted">Confidence: demo only</p></div>
+<div class="card"><h3>Possible categories</h3><ul><li>Leaf spot / discoloration</li><li>Insect or chewing damage</li><li>Water or heat stress</li></ul></div>
+<div class="card"><h3>Next step</h3><p>Compare with official/local advisory and inspect nearby plants.</p><button class="secondary" onclick="show('advice')">Open guidance</button></div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="fields" class="hidden">
+<div class="card"><h2>🌾 My Fields</h2><p class="lead">Create a field profile so the dashboard can personalize crop and weather monitoring.</p>
+<div class="row3"><div><label>Field name</label><input id="fieldName" placeholder="e.g. North Field"></div><div><label>Crop</label><select id="fieldCrop"><option>Wheat</option><option>Rice</option><option>Tomato</option><option>Potato</option><option>Cotton</option><option>Maize</option><option>Chilli</option><option>Soybean</option></select></div><div><label>Area (acre)</label><input id="fieldArea" type="number" placeholder="2"></div></div>
+<div class="actions"><button class="primary" onclick="saveField()">Save field</button><button class="secondary" onclick="useGPS()">📍 Get GPS coordinates</button></div>
+<div id="gpsBox" class="notice info" style="margin-top:10px">GPS coordinates will stay in this browser for the prototype.</div>
+<div class="section"><h3>Saved field</h3><div id="fieldList"></div></div>
+</div>
+</section>
+
+<section id="alerts" class="hidden">
+<div class="card"><h2>🔔 Early-Warning Center</h2><p class="lead">Prioritized alerts based on available weather, field and scan signals.</p>
+<div id="alertsList"></div>
+<div class="section notice warn"><b>Important:</b> An alert is a decision-support signal, not a guaranteed disease diagnosis. Verify serious crop problems with an appropriate agricultural expert or official advisory.</div>
+</div>
+</section>
+
+<section id="advice" class="hidden">
+<div class="card"><h2>💡 Smart Advice & Crop Protection Checklist</h2>
+<div class="row"><div><label>Select crop</label><select id="adviceCrop" onchange="renderAdvice()"><option>Wheat</option><option>Rice</option><option>Tomato</option><option>Potato</option><option>Cotton</option><option>Maize</option><option>Chilli</option><option>Soybean</option></select></div><div><label>Problem to investigate</label><select id="problem" onchange="renderAdvice()"><option>Disease</option><option>Pest</option><option>Water stress</option><option>Heat / drought</option><option>Excess moisture</option><option>Nutrient stress</option></select></div></div>
+<div id="adviceBox" class="section"></div>
+<div class="section card"><h3>🧾 Field inspection checklist</h3><div class="checks"><label><input type="checkbox"> Photograph affected leaves/plants</label><label><input type="checkbox"> Check 5–10 nearby plants for the same symptom</label><label><input type="checkbox"> Record recent rainfall/irrigation</label><label><input type="checkbox"> Check underside of leaves for insects/eggs</label><label><input type="checkbox"> Compare symptoms with an official/local advisory</label></div></div>
+</div>
+</section>
+
+<section id="history" class="hidden"></section>
+
+
+<div class="section card" id="languagePanel" style="margin-top:16px">
+<h3>🌐 Farmer language & regional support</h3>
+<p class="lead">Choose the language most comfortable for the farmer. The production version can localize alerts, voice guidance, crop names and advisories by state/district.</p>
+<div class="grid">
+<div><b>North & Plains</b><p class="muted">Hindi • Punjabi • Haryanvi • Bhojpuri • Maithili</p></div>
+<div><b>East & Northeast</b><p class="muted">Assamese • Bengali • Odia • Bodo</p></div>
+<div><b>South & West</b><p class="muted">Telugu • Tamil • Kannada • Malayalam • Marathi • Gujarati</p></div>
+</div>
+<div class="notice info">Language coverage is designed as an inclusive product feature; translations should be reviewed by native speakers and agriculture-domain experts before production deployment.</div>
+</div>
+<footer>CropShield AI prototype • SIH 2026 • Team SIH Beginners • Team ID 125796</footer>
+</main>
+
+<div id="loginModal" class="modal hidden"><div class="card"><h2>👤 Farmer profile</h2><label>Name</label><input id="farmerName" placeholder="Farmer name"><label>Mobile number</label><input id="farmerMobile" placeholder="10-digit mobile"><label>Preferred language</label><select id="language"><option>English</option><option>मराठी</option><option>हिन्दी</option></select><div class="actions"><button class="primary" onclick="saveProfile()">Save profile</button><button class="secondary" onclick="closeLogin()">Cancel</button></div><div class="muted" style="margin-top:8px">Prototype login only — no real authentication or personal data service is connected.</div></div></div>
+
+<script>
+let state=JSON.parse(localStorage.getItem('cropShieldState')||'{}');
+state.fields=state.fields||[];
+state.lat=state.lat||null; state.lon=state.lon||null; state.weather=state.weather||null;
+const $=id=>document.getElementById(id);
+function persist(){localStorage.setItem('cropShieldState',JSON.stringify(state))}
+function show(id){
+  ['home','dashboard','scan','fields','alerts','advice','voice'].forEach(x=>$(x).classList.add('hidden'));
+  $(id).classList.remove('hidden');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  const nav=$('nav-'+id); if(nav)nav.classList.add('active');
+  if(id==='dashboard')updateDashboard();
+  if(id==='fields')renderFields();
+  if(id==='alerts')renderAlerts();
+  if(id==='advice')renderAdvice();
+  if(id==='voice')updateVoiceStatus();
+  scrollTo(0,0)
+}
+const voiceLocales={en:'en-IN',hi:'hi-IN',te:'te-IN',pa:'pa-IN',ha:'hi-IN',as:'as-IN',or:'or-IN',bn:'bn-IN',mr:'mr-IN',gu:'gu-IN',ta:'ta-IN',kn:'kn-IN',ml:'ml-IN',bho:'hi-IN',mai:'hi-IN'};
+let recognition=null,listening=false,voices=[];
+function currentLocale(){return voiceLocales[state.language||'en']||'en-IN'}
+function updateVoiceStatus(msg){const el=$('voiceStatus');if(!el)return;if(msg){el.textContent=msg;return}el.textContent=`Voice language: ${currentLocale()} • ${('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)?'microphone available':'microphone not supported in this browser'}`}
+function loadVoices(){if('speechSynthesis' in window)voices=window.speechSynthesis.getVoices()||[]}
+if('speechSynthesis' in window){loadVoices();if(window.speechSynthesis.onvoiceschanged!==undefined)window.speechSynthesis.onvoiceschanged=loadVoices}
+function chooseVoice(locale){loadVoices();const p=locale.split('-')[0].toLowerCase();return voices.find(v=>v.lang&&v.lang.toLowerCase()===locale.toLowerCase())||voices.find(v=>v.lang&&v.lang.toLowerCase().startsWith(p))||null}
+function toggleVoice(){if(listening){stopListening();return}startListening()}
+function startListening(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){updateVoiceStatus('Microphone recognition is not supported by this browser. Try a current Chrome/Edge browser.');return}try{recognition=new SR();recognition.lang=currentLocale();recognition.continuous=false;recognition.interimResults=true;recognition.maxAlternatives=1;recognition.onstart=()=>{listening=true;$('voiceMic').classList.add('listening');$('voiceMic').textContent='🛑 Stop listening';updateVoiceStatus(`Listening in ${recognition.lang}…`)};recognition.onresult=e=>{let finalText='',interim='';for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)finalText+=t;else interim+=t}$('voiceTranscript').textContent=finalText||interim||'Listening…';if(finalText)handleVoiceCommand(finalText.trim())};recognition.onerror=e=>{listening=false;$('voiceMic').classList.remove('listening');$('voiceMic').textContent='🎙️ Start speaking';updateVoiceStatus(`Voice error: ${e.error}. Please try again.`)};recognition.onend=()=>{listening=false;$('voiceMic').classList.remove('listening');$('voiceMic').textContent='🎙️ Start speaking';if($('voiceStatus').textContent.startsWith('Listening'))updateVoiceStatus('Ready for another question.')};recognition.start()}catch(e){updateVoiceStatus('Could not start the microphone. Check browser microphone permission.')}}
+function stopListening(){if(recognition){try{recognition.stop()}catch(e){}}listening=false;$('voiceMic').classList.remove('listening');$('voiceMic').textContent='🎙️ Start speaking'}
+function stopSpeaking(){if('speechSynthesis' in window)window.speechSynthesis.cancel();updateVoiceStatus('Voice playback stopped.')}
+function speakText(text){if(!('speechSynthesis' in window)){updateVoiceStatus('Text-to-speech is not available on this device/browser.');return}window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=currentLocale();const v=chooseVoice(u.lang);if(v)u.voice=v;u.rate=.92;u.pitch=1;u.onstart=()=>updateVoiceStatus(`Speaking in ${u.lang}…`);u.onend=()=>updateVoiceStatus('Ready.');u.onerror=()=>updateVoiceStatus('Voice playback could not start.');window.speechSynthesis.speak(u)}
+function speakCurrentAdvice(){const crop=$('adviceCrop')?.value||state.fields[0]?.crop||'Wheat',problem=$('problem')?.value||'Disease';const texts={en:`For ${crop}, investigate ${problem}. Photograph the symptoms, inspect nearby plants, check recent rainfall and irrigation, and compare with an official or local agriculture advisory before choosing a treatment.`,hi:`${crop} में ${problem} की जाँच करें। लक्षणों की फोटो लें, आसपास के पौधों को देखें, हाल की बारिश और सिंचाई की जानकारी जाँचें और किसी उपचार से पहले स्थानीय कृषि सलाह से तुलना करें।`,te:`${crop} లో ${problem} ను పరిశీలించండి. లక్షణాల ఫోటో తీసి, సమీప మొక్కలను చూడండి, ఇటీవల వర్షపాతం మరియు నీటిపారుదల వివరాలను పరిశీలించి, చికిత్సకు ముందు స్థానిక వ్యవసాయ సలహాతో సరిపోల్చండి.`};speakText(texts[state.language]||texts.en)}
+function handleVoiceCommand(raw){const text=raw.toLowerCase();let reply='';if(text.includes('dashboard')||text.includes('डैशबोर्ड')){show('dashboard');reply='Farm dashboard opened.'}else if(text.includes('scan')||text.includes('स्कैन')){show('scan');reply='Crop scanner opened. Please upload a clear crop photo.'}else if(text.includes('alert')||text.includes('चेतावनी')){show('alerts');reply='Early warning alerts are open.'}else if(text.includes('advice')||text.includes('सलाह')){show('advice');reply='Smart advice is open.'}else if(text.includes('temperature')||text.includes('तापमान')){const w=state.weather||{};reply=`Current temperature is ${fmt(w.temperature,' degrees Celsius')}.`}else if(text.includes('humidity')||text.includes('नमी')){const w=state.weather||{};reply=`Current humidity is ${fmt(w.humidity,' percent')}.`}else if(text.includes('rain')||text.includes('बारिश')){const w=state.weather||{};reply=`Current precipitation is ${fmt(w.rain,' millimetres')}.`}else if(text.includes('pest')||text.includes('कीट')){show('advice');$('problem').value='Pest';renderAdvice();reply='I opened pest guidance. Inspect leaves, stems and undersides for insects or eggs.'}else if(text.includes('disease')||text.includes('रोग')){show('advice');$('problem').value='Disease';renderAdvice();reply='I opened disease guidance. Photograph symptoms and compare them with an official advisory.'}else{reply='I heard you. You can ask about temperature, humidity, rain, pests, disease, alerts, scan, dashboard, or advice.'}$('voiceTranscript').textContent=raw;speakText(reply)}
+function openLogin(){$('loginModal').classList.remove('hidden'); if(state.profile){$('farmerName').value=state.profile.name||'';$('farmerMobile').value=state.profile.mobile||'';$('language').value=state.profile.language||'English'}}
+function closeLogin(){$('loginModal').classList.add('hidden')}
+function saveProfile(){state.profile={name:$('farmerName').value,mobile:$('farmerMobile').value,language:$('language').value};persist();closeLogin();alert('Farmer profile saved on this device.')}
+function useGPS(){
+  if(!navigator.geolocation){setLocationText('GPS is not available in this browser.');return}
+  setLocationText('Requesting GPS location…');
+  navigator.geolocation.getCurrentPosition(async p=>{
+    state.lat=p.coords.latitude;state.lon=p.coords.longitude;persist();
+    $('gpsBox').textContent='GPS: '+state.lat.toFixed(5)+', '+state.lon.toFixed(5);
+    setLocationText('GPS connected: '+state.lat.toFixed(4)+', '+state.lon.toFixed(4));
+    await refreshWeather(); show('dashboard');
+  },e=>setLocationText('Location permission was not granted. You can still use the demo dashboard.'),{enableHighAccuracy:true,timeout:10000})
+}
+function setLocationText(t){if($('locationStatus'))$('locationStatus').textContent=t;if($('gpsBox'))$('gpsBox').textContent=t}
+async function refreshWeather(){
+  if(state.lat==null){state.weather={temperature:31,humidity:72,rain:0,soil:46,wind:11,et0:3.8,demo:true};persist();updateWeatherUI();return}
+  try{
+    const url=`https://api.open-meteo.com/v1/forecast?latitude=${state.lat}&longitude=${state.lon}&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&hourly=soil_moisture_0_to_7cm,et0_fao_evapotranspiration&forecast_days=1&timezone=auto`;
+    const r=await fetch(url); const d=await r.json();
+    state.weather={temperature:d.current.temperature_2m,humidity:d.current.relative_humidity_2m,rain:d.current.precipitation,wind:d.current.wind_speed_10m,soil:d.hourly?.soil_moisture_0_to_7cm?.[new Date().getHours()]??null,et0:d.hourly?.et0_fao_evapotranspiration?.[new Date().getHours()]??null,demo:false};
+    persist();updateWeatherUI();$('weatherNote').textContent='Live weather loaded for your GPS location using Open-Meteo. Soil moisture/ET₀ are model variables, not physical sensor readings.';
+  }catch(e){$('weatherNote').textContent='Live weather could not be loaded. Showing demo values instead.';state.weather={temperature:31,humidity:72,rain:0,soil:46,wind:11,et0:3.8,demo:true};persist();updateWeatherUI()}
+}
+function fmt(v,u){return v==null?'—':Number(v).toFixed(u?1:0)+(u||'')}
+function updateWeatherUI(){
+ const w=state.weather||{}; $('temp').textContent=fmt(w.temperature,'°C');$('humidity').textContent=fmt(w.humidity,'%');$('rain').textContent=fmt(w.rain,' mm');$('soil').textContent=w.soil==null?'—':Number(w.soil).toFixed(2);
+ $('homeTemp').textContent=fmt(w.temperature,'°C');$('homeHum').textContent=fmt(w.humidity,'%');$('homeRain').textContent=fmt(w.rain,' mm');$('homeSoil').textContent=w.soil==null?'—':Number(w.soil).toFixed(2);
+}
+function updateDashboard(){
+ const f=state.fields[0];$('fieldTitle').textContent=f?`${f.name} • ${f.crop} • ${f.area||'?'} acre`:'No field selected';
+ $('dashCrop').textContent=f?f.crop:'Not selected';updateWeatherUI();calcRisks()
+}
+function calcRisks(){
+ const w=state.weather||{};let disease='WATCH',pest='WATCH';
+ if(w.humidity>=80)disease='HIGH'; else if(w.humidity<55)disease='LOW';
+ if(w.temperature>=35||w.temperature<=8)pest='HIGH'; else if(w.temperature>=28)pest='MEDIUM';
+ $('diseaseRisk').textContent=disease;$('pestRisk').textContent=pest;
+ $('diseaseRisk').className='risk '+(disease==='LOW'?'good':disease==='HIGH'?'bad':'');
+ $('pestRisk').className='risk '+(pest==='HIGH'?'bad':pest==='LOW'?'good':'');
+ let a=[];
+ if(w.temperature>=35)a.push(['☀️ Heat stress','Temperature is high. Inspect crop for wilting/leaf scorch and review irrigation.','warn']);
+ if(w.humidity>=80)a.push(['🍃 Disease-risk weather','Humidity is high. Increase field scouting for disease symptoms.','warn']);
+ if(w.soil!=null&&w.soil<0.2)a.push(['💧 Water-stress check','Soil-moisture model value is low. Inspect the field before irrigating.','info']);
+ if(w.rain>5)a.push(['🌧️ Rainfall event','Recent precipitation detected. Check drainage and field access before interventions.','info']);
+ if(!a.length)a.push(['✅ Routine monitoring','No demo threshold alert is active. Continue regular crop scouting.','info']);
+ $('actionQueue').innerHTML=a.map(x=>`<div class="notice ${x[2]}" style="margin-bottom:8px"><b>${x[0]}</b><br>${x[1]}</div>`).join('')
+}
+function previewImage(){const f=$('imageFile').files[0];if(f){$('imagePreview').innerHTML=`<img src="${URL.createObjectURL(f)}" style="max-width:220px;max-height:160px;border-radius:12px;margin-top:8px">`}}
+function runScan(){$('scanResult').classList.remove('hidden');state.lastScan={crop:$('scanCrop').value,time:new Date().toLocaleString()};persist()}
+function saveField(){
+ const name=$('fieldName').value.trim()||'My Field';const crop=$('fieldCrop').value;const area=$('fieldArea').value||'?';
+ state.fields=[{name,crop,area,lat:state.lat,lon:state.lon,created:new Date().toLocaleDateString()},...state.fields.filter(x=>x.name!==name)];persist();renderFields();alert('Field saved.')}
+function renderFields(){
+ if(!state.fields.length){$('fieldList').innerHTML='<div class="notice info">No field saved yet.</div>';return}
+ $('fieldList').innerHTML=state.fields.map((f,i)=>`<div class="card" style="margin-top:9px"><div style="display:flex;justify-content:space-between;gap:8px"><div><b>🌾 ${f.name}</b><div class="muted">${f.crop} • ${f.area} acre • added ${f.created}</div></div><button class="secondary" onclick="selectField(${i})">Use this field</button></div></div>`).join('')
+}
+function selectField(i){const f=state.fields[i];if(f.lat) {state.lat=f.lat;state.lon=f.lon}persist();show('dashboard');refreshWeather()}
+function renderAlerts(){
+ const w=state.weather||{};let alerts=[];
+ if(w.temperature>=35)alerts.push(['High temperature','Inspect for heat stress and review irrigation.','bad']);
+ if(w.humidity>=80)alerts.push(['High humidity','Scout for disease-like symptoms.','warn']);
+ if(w.soil!=null&&w.soil<0.2)alerts.push(['Low soil moisture','Inspect soil and irrigation requirement.','warn']);
+ if(w.rain>5)alerts.push(['Rainfall','Check drainage and postpone unnecessary field operations.','info']);
+ alerts.push(['Image scan','Upload a crop image for symptom screening.','info']);
+ $('alertCount').textContent=alerts.length;
+ $('alertsList').innerHTML=alerts.map(a=>`<div class="notice ${a[2]}" style="margin:9px 0"><b>${a[0]}</b><br>${a[1]}</div>`).join('')
+}
+function renderAdvice(){
+ const crop=$('adviceCrop')?.value||'Wheat',p=$('problem')?.value||'Disease';
+ const map={
+ Disease:`For ${crop}: photograph symptoms, inspect nearby plants, note recent weather/irrigation and compare against an official or local agriculture advisory before choosing a treatment.`,
+ Pest:`For ${crop}: inspect leaves, stems and undersides for insects/eggs or chewing/sucking damage; record where symptoms occur and verify the pest before intervention.`,
+ 'Water stress':`For ${crop}: inspect soil moisture and plant wilting, review recent rainfall/irrigation, and avoid automatic irrigation based only on a model value.`,
+ 'Heat / drought':`For ${crop}: inspect for wilting, leaf scorch and uneven field stress; combine temperature, rainfall and soil-moisture signals with field observations.`,
+ 'Excess moisture':`For ${crop}: inspect drainage, standing water and root-zone conditions; monitor disease-like symptoms after wet periods.`,
+ 'Nutrient stress':`For ${crop}: record leaf color/pattern and affected plant age/position, then verify suspected deficiency with an agronomist or soil/plant test where appropriate.`
+ };
+ $('adviceBox').innerHTML=`<div class="notice info"><b>Decision-support guidance</b><p>${map[p]}</p><p class="muted">This prototype intentionally avoids prescribing chemicals or doses without validated crop-, pest- and location-specific recommendations.</p></div>`
+}
+
+const translations={
+en:{home:"🏠 Home",dashboard:"📊 Dashboard",scan:"📷 AI Scan",fields:"🌾 My Fields",alerts:"🔔 Alerts",advice:"💡 Smart Advice",scanTitle:"AI Crop & Pest Scanner",voice:"🎙️ Voice"},
+hi:{home:"🏠 होम",dashboard:"📊 डैशबोर्ड",scan:"📷 फसल स्कैन",fields:"🌾 मेरे खेत",alerts:"🔔 चेतावनी",advice:"💡 स्मार्ट सलाह",scanTitle:"फसल एवं कीट स्कैनर"},
+te:{home:"🏠 హోమ్",dashboard:"📊 డ్యాష్‌బోర్డ్",scan:"📷 పంట స్కాన్",fields:"🌾 నా పొలాలు",alerts:"🔔 హెచ్చరికలు",advice:"💡 స్మార్ట్ సలహా",scanTitle:"పంట & పురుగు స్కానర్"},
+pa:{home:"🏠 ਘਰ",dashboard:"📊 ਡੈਸ਼ਬੋਰਡ",scan:"📷 ਫਸਲ ਸਕੈਨ",fields:"🌾 ਮੇਰੇ ਖੇਤ",alerts:"🔔 ਚੇਤਾਵਨੀਆਂ",advice:"💡 ਸਮਾਰਟ ਸਲਾਹ",scanTitle:"ਫਸਲ ਅਤੇ ਕੀਟ ਸਕੈਨਰ"},
+ha:{home:"🏠 ਘਰ",dashboard:"📊 ਡੈਸ਼ਬੋਰਡ",scan:"📷 ਫਸਲ ਸਕੈਨ",fields:"🌾 ਮੇਰੇ ਖੇਤ",alerts:"🔔 ਚੇਤਾਵਨੀ",advice:"💡 ਸਮਾਰਟ ਸਲਾਹ",scanTitle:"ਫਸਲ ਸਕੈਨਰ"},
+as:{home:"🏠 মূল পৃষ্ঠা",dashboard:"📊 ডেশ্ব’ৰ্ড",scan:"📷 শস্য স্কেন",fields:"🌾 মোৰ পথাৰ",alerts:"🔔 সতৰ্কবাণী",advice:"💡 স্মাৰ্ট পৰামৰ্শ",scanTitle:"শস্য আৰু কীট স্কেনাৰ"},
+or:{home:"🏠 ହୋମ୍",dashboard:"📊 ଡ୍ୟାସବୋର୍ଡ",scan:"📷 ଫସଲ ସ୍କାନ୍",fields:"🌾 ମୋ କ୍ଷେତ",alerts:"🔔 ସତର୍କତା",advice:"💡 ସ୍ମାର୍ଟ ପରାମର୍ଶ",scanTitle:"ଫସଲ ଓ କୀଟ ସ୍କାନର"},
+bn:{home:"🏠 হোম",dashboard:"📊 ড্যাশবোর্ড",scan:"📷 ফসল স্ক্যান",fields:"🌾 আমার ক্ষেত",alerts:"🔔 সতর্কতা",advice:"💡 স্মার্ট পরামর্শ",scanTitle:"ফসল ও পোকা স্ক্যানার"},
+mr:{home:"🏠 मुख्यपृष्ठ",dashboard:"📊 डॅशबोर्ड",scan:"📷 पीक स्कॅन",fields:"🌾 माझी शेती",alerts:"🔔 सूचना",advice:"💡 स्मार्ट सल्ला",scanTitle:"पीक व किडी स्कॅनर"},
+gu:{home:"🏠 હોમ",dashboard:"📊 ડેશબોર્ડ",scan:"📷 પાક સ્કેન",fields:"🌾 મારા ખેતરો",alerts:"🔔 ચેતવણીઓ",advice:"💡 સ્માર્ટ સલાહ",scanTitle:"પાક અને જીવાત સ્કેનર"},
+ta:{home:"🏠 முகப்பு",dashboard:"📊 டாஷ்போர்டு",scan:"📷 பயிர் ஸ்கேன்",fields:"🌾 என் வயல்கள்",alerts:"🔔 எச்சரிக்கைகள்",advice:"💡 ஸ்மார்ட் ஆலோசனை",scanTitle:"பயிர் & பூச்சி ஸ்கேனர்"},
+kn:{home:"🏠 ಮುಖಪುಟ",dashboard:"📊 ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",scan:"📷 ಬೆಳೆ ಸ್ಕ್ಯಾನ್",fields:"🌾 ನನ್ನ ಹೊಲಗಳು",alerts:"🔔 ಎಚ್ಚರಿಕೆಗಳು",advice:"💡 ಸ್ಮಾರ್ಟ್ ಸಲಹೆ",scanTitle:"ಬೆಳೆ & ಕೀಟ ಸ್ಕ್ಯಾನರ್"},
+ml:{home:"🏠 ഹോം",dashboard:"📊 ഡാഷ്ബോർഡ്",scan:"📷 വിള സ്കാൻ",fields:"🌾 എന്റെ വയലുകൾ",alerts:"🔔 മുന്നറിയിപ്പുകൾ",advice:"💡 സ്മാർട്ട് ഉപദേശം",scanTitle:"വിള & കീട സ്കാനർ"},
+bho:{home:"🏠 घर",dashboard:"📊 डैशबोर्ड",scan:"📷 फसल स्कैन",fields:"🌾 हमार खेत",alerts:"🔔 चेतावनी",advice:"💡 स्मार्ट सलाह",scanTitle:"फसल आ कीड़ा स्कैनर"},
+mai:{home:"🏠 घर",dashboard:"📊 डैशबोर्ड",scan:"📷 फसल स्कैन",fields:"🌾 हमर खेत",alerts:"🔔 चेतावनी",advice:"💡 स्मार्ट सलाह",scanTitle:"फसल आ कीट स्कैनर"}
+};
+function setLanguage(lang){
+ const t=translations[lang]||translations.en;
+ const map={home:t.home,dashboard:t.dashboard,scan:t.scan,fields:t.fields,alerts:t.alerts,advice:t.advice,voice:t.voice||'🎙️ Voice'};
+ Object.keys(map).forEach(k=>{const el=$('nav-'+k);if(el)el.childNodes[0].textContent=map[k]+' '});
+ const h=$('scan')?.querySelector('h2'); if(h)h.textContent=t.scanTitle;
+ state.language=lang;persist();updateVoiceStatus();
+}
+
+refreshWeather();renderFields();renderAlerts();renderAdvice();setLanguage(state.language||'en');show('home');
+</script>
+</body>
+</html>
